@@ -19,7 +19,7 @@ class MigrationTest < Minitest::Test
   def migration_exists?(db, name)
     result = db.exec("SELECT EXISTS(
                         SELECT filename FROM schema_migrations
-                          WHERE filename = $1)", [ name ]).
+                          WHERE filename = $1);", [ name ]).
       to_a.first
     result.fetch("exists") == "t"
   end

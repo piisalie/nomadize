@@ -1,5 +1,9 @@
 require "nomadize/version"
+require "nomadize/migration"
 
 module Nomadize
-  # Your code goes here...
+
+  def self.run_migrations
+  end
+
 end

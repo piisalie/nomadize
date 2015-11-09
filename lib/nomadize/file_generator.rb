@@ -19,7 +19,7 @@ module Nomadize
     private
 
     def timestamped_name
-      "#{timestamp}_#{name}.rb"
+      "#{timestamp}_#{name}.yml"
     end
 
   end

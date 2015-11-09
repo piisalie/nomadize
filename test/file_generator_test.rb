@@ -12,7 +12,7 @@ class FileGeneratorTest < Minitest::Test
     Dir.mktmpdir('nomadize_file_generator_test') do |path|
       generator = Nomadize::FileGenerator.new(path: path, name: file_name, timestamp: timestamp)
       generator.save
-      assert File.exists?(File.join(path, "#{timestamp}_#{file_name}.rb"))
+      assert File.exists?(File.join(path, "#{timestamp}_#{file_name}.yml"))
     end
   end
 
