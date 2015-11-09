@@ -11,11 +11,12 @@ module Nomadize
 
     def run(db)
       db.exec(up)
-      db.exec("INSERT INTO schema_migrations (filename) VALUES ('#{filename}');")
+      db.exec("INSERT INTO schema_migrations (filename) VALUES ($1);", [ filename ])
     end
 
     def rollback(db)
       db.exec(down)
+      db.exec("DELETE FROM schema_migrations WHERE filename = $1;", [ filename ])
     end
 
   end

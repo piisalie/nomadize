@@ -6,7 +6,7 @@ This is nowhere near done; still needs:
 - [ ] an actual config setup / object
 - [ ] sql cleaning (getting rid of the interpolation)
 - [x] to display migration status
-- [ ] migration rollbacks
+- [x] migration rollbacks
 - [ ] transactions / error handling
 - [ ] maybe some kind of logging idk
 
@@ -40,6 +40,8 @@ tasks such as:
 `rake db:migrate` - runs migrations found in db/migrations that have not been run yet
 
 `rake db:status` - see which migrations have or have not been run
+
+`rake db:rollback[count]` - rollback migrations (default count: 1)
 
 ## Development
 

@@ -12,6 +12,11 @@ module Nomadize
       pending.map { |migration| migration.run(db) }
     end
 
+    def rollback(count)
+      offset = count == 1 ? -2 : -count
+      done[offset..-1].reverse.map { |migration| migration.rollback(db) }
+    end
+
     def pending
       sorted_by_timestamp.select do |migration|
         !recorded_migrations.include?(migration.filename)
@@ -19,6 +24,12 @@ module Nomadize
     end
 
     private
+
+    def done
+      sorted_by_timestamp.select do |migration|
+        recorded_migrations.include?(migration.filename)
+      end
+    end
 
     def sorted_by_timestamp
       migrations.sort_by { |migration| migration.filename }

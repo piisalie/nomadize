@@ -30,4 +30,10 @@ namespace :db do
     Nomadize.status
   end
 
+  desc 'rollback migrations (default count: 1)'
+  task :rollback, :count do |_, args|
+    count = args.count || 1
+    Nomadize.rollback(count)
+  end
+
 end

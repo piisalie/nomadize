@@ -33,7 +33,7 @@ module Nomadize
     migrations_path = Config.migrations_path
     files           = MigrationLoader.new(path: migrations_path).migrations
     db              = PG.connect(dbname: name)
-    records = db.exec("SELECT filename FROM schema_migrations;").to_a.flat_map(&:values)
+    records         = db.exec("SELECT filename FROM schema_migrations;").to_a.flat_map(&:values)
 
     display = StatusDisplay.new(files: files, records: records)
 
@@ -42,6 +42,18 @@ module Nomadize
     display.migrations.each do |row|
       puts row
     end
+  end
+
+  def self.rollback(count)
+    db = PG.connect(dbname: Nomadize::Config.database_name)
+    migration_files = Nomadize::MigrationLoader.new(path: Nomadize::Config.migrations_path).migrations
+    migrations =  migration_files.map do |migration|
+      Nomadize::Migration.new(migration)
+    end
+
+    migrator = Nomadize::Migrator.new(db: db, migrations: migrations)
+    migrator.rollback(count)
+    db
   end
 
 end
