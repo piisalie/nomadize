@@ -5,7 +5,7 @@ module Nomadize
     private     :files, :records
 
     def initialize(files:, records:)
-      @files   = files.map { |file| file.merge!(status: records.include?(file[:filename]) ? "up" : "down") }
+      @files   = files
       @records = records
     end
 
@@ -25,8 +25,30 @@ module Nomadize
 
     private
 
+    def files_with_status
+      files.map { |file|
+        file.merge(status: calculate_status(file))
+      }
+    end
+
+    def calculate_status(file)
+      if records.include?(file[:filename])
+        'up'
+      else
+        'down'
+      end
+    end
+
     def sorted_migrations
-      files.sort_by { |file| file[:filename] }
+      migrations = files_with_status + migrations_without_files
+      migrations.sort_by { |file| file[:filename] }
+    end
+
+    def migrations_without_files
+      filenames = files.map { |file| file[:filename] }
+      records.select { |record| !filenames.include?(record) }.map { |record|
+        { filename: record, status: 'missing' }
+      }
     end
 
     def rsize
@@ -34,7 +56,7 @@ module Nomadize
     end
 
     def lsize
-      @lsize ||= files.map { |file| file[:filename] }.map(&:size).max
+      @lsize ||= sorted_migrations.map { |file| file[:filename] }.map(&:size).max
     end
 
   end

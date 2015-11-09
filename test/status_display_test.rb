@@ -5,7 +5,7 @@ require 'nomadize/status_display'
 class StatusDisplayTest < Minitest::Test
 
   def setup
-    @files    = [ {filename: "01_migration"}, {filename: "02_short" }]
+    @files    = [ {filename: "01_migration"}, {filename: "02_short" } ]
     @records  = [ "01_migration" ]
     @display  = Nomadize::StatusDisplay.new(files: @files, records: @records)
   end
@@ -28,6 +28,14 @@ class StatusDisplayTest < Minitest::Test
     display_rows = @display.migrations
     assert_equal row,        display_rows.next
     assert_equal second_row, display_rows.next
+  end
+
+  def test_displays_missing_files
+    display = Nomadize::StatusDisplay.new(files: [ ], records: ['01_migration'])
+    display_rows = display.migrations
+    row = "01_migration" + " | " + "missing"
+
+    assert_equal row, display.migrations.next
   end
 
 end
