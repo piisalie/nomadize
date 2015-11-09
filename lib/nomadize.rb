@@ -11,7 +11,8 @@ module Nomadize
     db = PG.connect(dbname: Nomadize::Config.database_name)
     migration_files = Nomadize::MigrationLoader.new(path: "db/migrations").migrations
     migrations =  migration_files.map do |migration|
-      Nomadize::Migration.new(migration) end
+      Nomadize::Migration.new(migration)
+    end
 
     migrator = Nomadize::Migrator.new(db: db, migrations: migrations)
     migrator.run

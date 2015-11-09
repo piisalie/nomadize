@@ -1,5 +1,13 @@
 # Nomadize
 
+Some utilities for managing migrations with postgres (without requiring an entire ORM)
+
+This is nowhere near done; still needs:
+- [ ] an actual config setup / object
+- [ ] sql cleaning (getting rid of the interpolation)
+- [ ] to display migration status
+- [ ] migration rollbacks
+- [ ] transactions / error handling
 
 ## Installation
 
@@ -19,6 +27,16 @@ Or install it yourself as:
 
 ## Usage
 
+Add `require 'nomadize/tasks'` to your rake file, and enjoy helpful new rake
+tasks such as:
+
+`rake db:create` - creates a database and a schema_migrations table
+
+`rake db:drop`   - dumps your poor poor database
+
+`rake db:new_migration[migration_name]` - creates a timestamped migration file in db/migrations/ just fill in the details.
+
+`rake db:migrate` - runs migrations found in db/migrations that have not been run yet
 
 ## Development
 

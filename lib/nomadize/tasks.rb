@@ -1,8 +1,9 @@
+require 'nomadize'
+
 namespace :db do
 
   desc 'Create database using name in {appdir}/config/database.yml'
   task :create do
-    require 'nomadize'
     Nomadize.create_database
   end
 
@@ -21,7 +22,6 @@ namespace :db do
 
   desc 'Run migrations'
   task :migrate do
-    require 'nomadize'
     Nomadize.run_migrations
   end
 
