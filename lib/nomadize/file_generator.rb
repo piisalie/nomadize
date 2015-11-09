@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'yaml'
 
 module Nomadize
   class FileGenerator
@@ -13,13 +14,17 @@ module Nomadize
 
     def save
       FileUtils.mkdir_p path unless File.exists?(path)
-      File.open(File.join(path, timestamped_name), "w") { }
+      File.open(File.join(path, timestamped_name), "w") { |f| f.write(template_content) }
     end
 
     private
 
     def timestamped_name
       "#{timestamp}_#{name}.yml"
+    end
+
+    def template_content
+      YAML.dump( {up: "", down: "" })
     end
 
   end

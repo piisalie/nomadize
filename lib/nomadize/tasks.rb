@@ -23,7 +23,7 @@ namespace :db do
   desc 'Run migrations'
   task :migrate do
     require 'nomadize'
-    Nomadize.run(migrations)
+    Nomadize.run_migrations
   end
 
 end

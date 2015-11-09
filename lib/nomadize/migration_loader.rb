@@ -12,7 +12,7 @@ module Nomadize
     def migrations
       filenames.map do |filename|
         File.open(filename, "r") { |f|
-          YAML.load(f).merge(filename: File.basename(filename))
+          YAML.load(f).merge(filename: File.basename(filename, ".yml"))
         }
       end
     end

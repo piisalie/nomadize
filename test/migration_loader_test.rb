@@ -6,12 +6,12 @@ require 'nomadize/migration_loader'
 class MigrationLoaderTest < Minitest::Test
 
   def test_it_loads_migration_files
-    filename = "20151109094511_create_test_table.yml"
+    filename = "20151109094511_create_test_table"
     up       = "CREATE TABLE test (example TEXT NOT NULL);"
     down     = "DROP TABLE test;"
 
     Dir.mktmpdir('nomadize_migration_loader_test') do |path|
-      File.open(File.join(path, filename), "w") { |f|
+      File.open(File.join(path, filename + ".yml"), "w") { |f|
         f.write(YAML.dump( { up:   up,
                             down: down } ))
       }
