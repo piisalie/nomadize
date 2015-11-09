@@ -69,6 +69,7 @@ class MigratorTest < Minitest::Test
     pg = PG.connect(dbname: 'postgres')
     if db_exists?(pg)
       db = PG.connect(dbname: TEST_DB_NAME)
+      db.exec("SET client_min_messages TO WARNING;")
       db.exec("DROP SCHEMA public CASCADE;
                CREATE SCHEMA public;")
       db
