@@ -6,8 +6,12 @@ module Nomadize
       open_config_file.fetch("db_name")
     end
 
+    def self.migrations_path
+      open_config_file.fetch("migrations_path")
+    end
+
     def self.open_config_file
-      File.open('config/database.yml') { |f| YAML.load(f) }
+      @file ||= File.open('config/database.yml') { |f| YAML.load(f) }
     end
   end
 end

@@ -5,9 +5,10 @@ Some utilities for managing migrations with postgres (without requiring an entir
 This is nowhere near done; still needs:
 - [ ] an actual config setup / object
 - [ ] sql cleaning (getting rid of the interpolation)
-- [ ] to display migration status
+- [x] to display migration status
 - [ ] migration rollbacks
 - [ ] transactions / error handling
+- [ ] maybe some kind of logging idk
 
 ## Installation
 
@@ -37,6 +38,8 @@ tasks such as:
 `rake db:new_migration[migration_name]` - creates a timestamped migration file in db/migrations/ just fill in the details.
 
 `rake db:migrate` - runs migrations found in db/migrations that have not been run yet
+
+`rake db:status` - see which migrations have or have not been run
 
 ## Development
 

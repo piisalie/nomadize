@@ -25,4 +25,9 @@ namespace :db do
     Nomadize.run_migrations
   end
 
+  desc 'view the status of known migrations'
+  task :status do
+    Nomadize.status
+  end
+
 end
