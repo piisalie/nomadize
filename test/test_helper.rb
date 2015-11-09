@@ -2,3 +2,35 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'nomadize'
 
 require 'minitest/autorun'
+
+TEST_DB_NAME = 'nomadize_migrator_test'
+
+def setup_database
+  pg = PG.connect(dbname: 'postgres')
+  if db_exists?(pg)
+    db = PG.connect(dbname: TEST_DB_NAME)
+    db.exec("SET client_min_messages TO WARNING;")
+    db.exec("DROP SCHEMA public CASCADE;
+               CREATE SCHEMA public;")
+    db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
+    db
+  else
+    pg.exec("CREATE DATABASE #{TEST_DB_NAME};")
+    db = PG.connect(dbname: TEST_DB_NAME)
+    db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
+  end
+end
+
+def db_exists?(pg)
+  result = pg.exec("SELECT EXISTS(
+                             SELECT * FROM pg_database
+                               WHERE datname='#{TEST_DB_NAME}');").to_a.first
+  result.fetch("exists") == "t"
+end
+
+
+def check_for_table?(name, db)
+  result = db.exec("SELECT EXISTS(SELECT * FROM information_schema.tables
+           WHERE table_name = '#{name}');").to_a.first
+  result.fetch("exists") == "t"
+end

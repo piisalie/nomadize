@@ -6,7 +6,6 @@ module Nomadize
     def initialize(db:, migrations:)
       @migrations = migrations
       @db         = db
-      create_migrations_table
     end
 
     def run
@@ -23,10 +22,6 @@ module Nomadize
 
     def sorted_by_timestamp
       migrations.sort_by { |migration| migration.filename }
-    end
-
-    def create_migrations_table
-      db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
     end
 
     def recorded_migrations

@@ -5,16 +5,6 @@ require 'nomadize/migrator'
 require 'nomadize/migration'
 
 class MigratorTest < Minitest::Test
-  TEST_DB_NAME = 'nomadize_migrator_test'
-
-  def test_creates_a_migration_table_automatically
-    db = setup_database
-    table_name = 'schema_migrations'
-
-    assert_equal({"exists" => "f"}, check_for_table(table_name, db))
-    migrator = Nomadize::Migrator.new(db: db, migrations: [ ])
-    assert_equal({"exists" => "t"}, check_for_table(table_name, db))
-  end
 
   def test_can_run_a_migration
     db = setup_database
@@ -26,9 +16,9 @@ class MigratorTest < Minitest::Test
 
     migrator = Nomadize::Migrator.new(db: db, migrations: [ migration ])
 
-    assert_equal({"exists" => "f"}, check_for_table(table_name, db))
+    refute check_for_table?(table_name, db)
     migrator.run
-    assert_equal({"exists" => "t"}, check_for_table(table_name, db))
+    assert check_for_table?(table_name, db)
   end
 
   def test_knows_which_migrations_are_pending
@@ -58,32 +48,6 @@ class MigratorTest < Minitest::Test
 
     migrator = Nomadize::Migrator.new(db: db, migrations: [ migration2, migration1 ])
     assert migrator.run
-  end
-
-  def check_for_table(name, db)
-    db.exec("SELECT EXISTS(SELECT * FROM information_schema.tables
-             WHERE table_name = '#{name}');").to_a.first
-  end
-
-  def setup_database
-    pg = PG.connect(dbname: 'postgres')
-    if db_exists?(pg)
-      db = PG.connect(dbname: TEST_DB_NAME)
-      db.exec("SET client_min_messages TO WARNING;")
-      db.exec("DROP SCHEMA public CASCADE;
-               CREATE SCHEMA public;")
-      db
-    else
-      pg.exec("CREATE DATABASE #{TEST_DB_NAME};")
-      db = PG.connect(dbname: TEST_DB_NAME)
-    end
-  end
-
-  def db_exists?(pg)
-     result = pg.exec("SELECT EXISTS(
-                             SELECT * FROM pg_database
-                               WHERE datname='#{TEST_DB_NAME}');").to_a.first
-     result.fetch("exists") == "t"
   end
 
 end
