@@ -4,6 +4,7 @@ require 'nomadize/migration'
 require 'nomadize/migrator'
 require 'nomadize/config'
 require 'nomadize/status_display'
+require 'nomadize/file_generator'
 
 module Nomadize
 
@@ -46,6 +47,14 @@ module Nomadize
 
     migrator.rollback(count)
     db
+  end
+
+  def self.drop_database
+    system("dropdb --echo #{Config.database_name}")
+  end
+
+  def self.generate_template_migration_file(name)
+    Nomadize::FileGenerator.new(path: Config.migrations_path, name: name).save
   end
 
 end

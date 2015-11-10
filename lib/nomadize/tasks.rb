@@ -9,15 +9,12 @@ namespace :db do
 
   desc 'drop database using name in {appdir}/config/database.yml'
   task :drop do
-    require 'nomadize/config'
-    name = Nomadize::Config.database_name
-    system("dropdb --echo #{name}")
+    Nomadize.drop_database
   end
 
   desc 'Generate a migration template file in {appdir}/db/migrations/'
   task :new_migration, [:migration_name] do |_, args|
-    require 'nomadize/file_generator'
-    Nomadize::FileGenerator.new(path: 'db/migrations', name: args.migration_name).save
+    Nomadize.generate_template_migration_file(args.migration_name)
   end
 
   desc 'Run migrations'
