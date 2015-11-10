@@ -13,8 +13,7 @@ module Nomadize
     end
 
     def rollback(count)
-      offset = count == 1 ? -2 : -count
-      done[offset..-1].reverse.map { |migration| migration.rollback(db) }
+      done[-count..-1].reverse.map { |migration| migration.rollback(db) }
     end
 
     def pending
@@ -36,7 +35,7 @@ module Nomadize
     end
 
     def recorded_migrations
-      db.exec("SELECT filename FROM schema_migrations;").values.flatten
+      db.retrieve_all_migration_filenames
     end
 
   end

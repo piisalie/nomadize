@@ -3,13 +3,13 @@
 Some utilities for managing migrations with postgres (without requiring an entire ORM)
 
 This is nowhere near done; still needs:
-- [ ] an actual config setup / object
+- [x] an actual config setup / object
 - [x] sql cleaning (getting rid of the interpolation)
 - [x] to display migration status
 - [x] migration rollbacks
 - [ ] transactions / error handling
 - [ ] maybe some kind of logging idk
-- [ ] possibly wrap pg
+- [x] possibly wrap pg
 
 ## Installation
 

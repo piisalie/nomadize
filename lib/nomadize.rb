@@ -8,13 +8,11 @@ require 'nomadize/status_display'
 module Nomadize
 
   def self.run_migrations
-    db = Config.db
+    db              = Config.db
     migration_files = MigrationLoader.new(path: Config.migrations_path).migrations
-    migrations      =  migration_files.map do |migration|
-      Migration.new(migration)
-    end
+    migrations      = migration_files.map { |migration| Migration.new(migration) }
+    migrator        = Migrator.new(db: db, migrations: migrations)
 
-    migrator = Migrator.new(db: db, migrations: migrations)
     migrator.run
     db
   end
@@ -41,13 +39,11 @@ module Nomadize
   end
 
   def self.rollback(count = 1)
-    db = Config.db
+    db              = Config.db
     migration_files = MigrationLoader.new(path: Config.migrations_path).migrations
-    migrations =  migration_files.map do |migration|
-      Migration.new(migration)
-    end
+    migrations      = migration_files.map { |migration| Migration.new(migration) }
+    migrator        = Migrator.new(db: db, migrations: migrations)
 
-    migrator = Migrator.new(db: db, migrations: migrations)
     migrator.rollback(count)
     db
   end
