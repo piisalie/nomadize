@@ -4,11 +4,12 @@ Some utilities for managing migrations with postgres (without requiring an entir
 
 This is nowhere near done; still needs:
 - [ ] an actual config setup / object
-- [ ] sql cleaning (getting rid of the interpolation)
+- [x] sql cleaning (getting rid of the interpolation)
 - [x] to display migration status
 - [x] migration rollbacks
 - [ ] transactions / error handling
 - [ ] maybe some kind of logging idk
+- [ ] possibly wrap pg
 
 ## Installation
 

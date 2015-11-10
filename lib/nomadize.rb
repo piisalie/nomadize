@@ -44,7 +44,7 @@ module Nomadize
     end
   end
 
-  def self.rollback(count)
+  def self.rollback(count = 1)
     db = PG.connect(dbname: Nomadize::Config.database_name)
     migration_files = Nomadize::MigrationLoader.new(path: Nomadize::Config.migrations_path).migrations
     migrations =  migration_files.map do |migration|

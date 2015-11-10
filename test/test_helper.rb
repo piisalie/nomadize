@@ -15,7 +15,7 @@ def setup_database
     db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
     db
   else
-    pg.exec("CREATE DATABASE #{TEST_DB_NAME};")
+    pg.exec("CREATE DATABASE $1;", [ TEST_DB_NAME ])
     db = PG.connect(dbname: TEST_DB_NAME)
     db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
   end
@@ -24,13 +24,13 @@ end
 def db_exists?(pg)
   result = pg.exec("SELECT EXISTS(
                              SELECT * FROM pg_database
-                               WHERE datname='#{TEST_DB_NAME}');").to_a.first
+                               WHERE datname = $1);", [ TEST_DB_NAME ]).to_a.first
   result.fetch("exists") == "t"
 end
 
 
 def check_for_table?(name, db)
   result = db.exec("SELECT EXISTS(SELECT * FROM information_schema.tables
-           WHERE table_name = '#{name}');").to_a.first
+           WHERE table_name = $1);", [ name ]).to_a.first
   result.fetch("exists") == "t"
 end
