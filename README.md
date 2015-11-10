@@ -2,6 +2,7 @@
 
 Some simple tools for managing migrations with postgres (without requiring an entire ORM).
 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -46,6 +47,13 @@ After a config file is in place  add `require 'nomadize/tasks'` to your rake fil
 * `rake db:status` - see which migrations have or have not been run
 * `rake db:rollback[count]` - rollback migrations (default count: 1)
 
+Migrations are written in SQL in the generated YAML files:
+
+```
+---
+:up:   'CREATE TABLE testing (field TEXT);'
+:down: 'DROP TABLE testing;'
+```
 
 ## Development
 
