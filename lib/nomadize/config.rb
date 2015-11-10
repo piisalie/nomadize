@@ -1,15 +1,12 @@
 require 'yaml'
 require 'pg'
+require 'nomadize/pg_wrapper'
 
 module Nomadize
   class Config
 
     def self.env
       ENV.fetch('RACK_ENV', 'development')
-    end
-
-    def self.connection_options
-      config_file.fetch(env).fetch('db_options')
     end
 
     def self.db_connection_info
@@ -29,7 +26,7 @@ module Nomadize
     end
 
     def self.db
-      PG.connect(db_connection_info)
+      PGWrapper.new(PG.connect(db_connection_info))
     end
 
   end

@@ -10,7 +10,7 @@ module Nomadize
   def self.run_migrations
     db = Config.db
     migration_files = MigrationLoader.new(path: Config.migrations_path).migrations
-    migrations =  migration_files.map do |migration|
+    migrations      =  migration_files.map do |migration|
       Migration.new(migration)
     end
 
@@ -22,14 +22,14 @@ module Nomadize
   def self.create_database
     system("createdb --echo #{Config.database_name}")
     db = Config.db
-    db.exec("CREATE TABLE schema_migrations (filename TEXT NOT NULL);")
+    db.create_schema_migrations_table
     db
   end
 
   def self.status
-    files           = MigrationLoader.new(path: Config.migrations_path).migrations
-    db              = Config.db
-    records         = db.exec("SELECT filename FROM schema_migrations;").to_a.flat_map(&:values)
+    files   = MigrationLoader.new(path: Config.migrations_path).migrations
+    db      = Config.db
+    records = db.retrieve_all_migration_filenames
 
     display = StatusDisplay.new(files: files, records: records)
 

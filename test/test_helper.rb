@@ -2,22 +2,22 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'nomadize'
 
 require 'minitest/autorun'
-
+require 'nomadize/pg_wrapper'
 TEST_DB_NAME = 'nomadize_migrator_test'
 
 def setup_database
   pg = PG.connect(dbname: 'postgres')
   if db_exists?(pg)
-    db = PG.connect(dbname: TEST_DB_NAME)
+    db = Nomadize::PGWrapper.new(PG.connect(dbname: TEST_DB_NAME))
     db.exec("SET client_min_messages TO WARNING;")
     db.exec("DROP SCHEMA public CASCADE;
                CREATE SCHEMA public;")
-    db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
+    db.create_schema_migrations_table
     db
   else
     pg.exec("CREATE DATABASE $1;", [ TEST_DB_NAME ])
-    db = PG.connect(dbname: TEST_DB_NAME)
-    db.exec("CREATE TABLE IF NOT EXISTS schema_migrations (filename TEXT NOT NULL);")
+    db = Nomadize::PGWrapper.new(PG.connect(dbname: TEST_DB_NAME))
+    db.create_schema_migrations_table
   end
 end
 
