@@ -1,15 +1,6 @@
 # Nomadize
 
-Some utilities for managing migrations with postgres (without requiring an entire ORM)
-
-This is nowhere near done; still needs:
-- [x] an actual config setup / object
-- [x] sql cleaning (getting rid of the interpolation)
-- [x] to display migration status
-- [x] migration rollbacks
-- [ ] transactions / error handling
-- [ ] maybe some kind of logging idk
-- [x] possibly wrap pg
+Some simple tools for managing migrations with postgres (without requiring an entire ORM).
 
 ## Installation
 
@@ -58,9 +49,16 @@ After a config file is in place  add `require 'nomadize/tasks'` to your rake fil
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+todo:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- [x] an actual config setup / object
+- [x] sql cleaning (getting rid of the interpolation)
+- [x] to display migration status
+- [x] migration rollbacks
+- [ ] transactions / error handling
+- [ ] maybe some kind of logging idk
+- [x] possibly wrap pg
+
 
 ## Contributing
 
