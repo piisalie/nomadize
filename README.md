@@ -55,6 +55,8 @@ Migrations are written in SQL in the generated YAML files:
 :down: 'DROP TABLE testing;'
 ```
 
+You also have access to the underlying PG connection wrapper (using your defined config) by using the `Nomadize::Config.db` method. This wrapper responds to `exec` in the same way that the underlying PG connection object does.
+
 ## Development
 
 todo:
@@ -66,6 +68,8 @@ todo:
 - [ ] transactions / error handling
 - [ ] maybe some kind of logging idk
 - [x] possibly wrap pg
+- [ ] template config file generator
+- [ ] maybe set a default migrations path (so the key isn't required in the config file)
 
 
 ## Contributing
