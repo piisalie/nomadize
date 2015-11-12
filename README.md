@@ -25,7 +25,6 @@ Or install it yourself as:
 Nomadize expects a database configuration file in `config/database.yml`. This file should look something like:
 
 ```
-migrations_path: db/migrations
 development:
   :dbname: lol_dev
 test:
@@ -34,9 +33,9 @@ production:
   :dbname: lol_production
 ```
 
-`migrations_path` defines where Nomadize should find and create your migration files.
+test/development/production keys set environment dependent options (through `RACK_ENV`) for the postgres connection object. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
 
-The test/development/production keys set environment dependent options (through `RACK_ENV`) for the postgres connection object. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
+`migrations_path: db/migrations` defines where Nomadize should find and create your migration files, this setting is optional and is set to `db/migrations` by default.
 
 After a config file is in place  add `require 'nomadize/tasks'` to your rake file, and enjoy helpful new rake tasks such as:
 

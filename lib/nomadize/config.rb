@@ -18,7 +18,7 @@ module Nomadize
     end
 
     def self.migrations_path
-      config_file.fetch("migrations_path")
+      config_file.fetch('migrations_path', 'db/migrations')
     end
 
     def self.config_file(path = 'config/database.yml')
