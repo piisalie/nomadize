@@ -68,8 +68,8 @@ todo:
 - [ ] transactions / error handling
 - [ ] maybe some kind of logging idk
 - [x] possibly wrap pg
-- [ ] template config file generator
-- [ ] maybe set a default migrations path (so the key isn't required in the config file)
+- [x] template config file generator
+- [x] maybe set a default migrations path (so the key isn't required in the config file)
 
 
 ## Contributing
