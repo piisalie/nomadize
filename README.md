@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-Nomadize expects a database configuration file in `config/database.yml`. This file should look something like:
+Nomadize expects a database configuration file in `config/database.yml`. You can generate this file with the rake task `db:generate_template_config` or write it yourself. This file should look something like:
 
 ```
 development:
@@ -45,6 +45,7 @@ After a config file is in place  add `require 'nomadize/tasks'` to your rake fil
 * `rake db:migrate` - runs migrations found in db/migrations that have not been run yet
 * `rake db:status` - see which migrations have or have not been run
 * `rake db:rollback[count]` - rollback migrations (default count: 1)
+* `rake db:generate_template_config` - generate a config file in `config/database.yml`
 
 Migrations are written in SQL in the generated YAML files:
 

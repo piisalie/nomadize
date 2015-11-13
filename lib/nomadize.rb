@@ -57,4 +57,15 @@ module Nomadize
     Nomadize::FileGenerator.new(path: Config.migrations_path, name: name).save
   end
 
+  def self.generate_template_config
+    fail 'Config file already exists' if File.exists?('config/database.yml')
+    template_config = YAML.dump(
+      { 'development' => { dbname: '' },
+        'test'        => { dbname: '' },
+        'production'  => { dbname: '' }
+      } )
+    FileUtils.mkdir 'config' unless File.exists?('config')
+    File.open('config/database.yml', 'w') { |f| f.write(template_config) }
+  end
+
 end
