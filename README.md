@@ -1,6 +1,6 @@
 # Nomadize
 
-Some simple tools for managing migrations with postgres (without requiring an entire ORM).
+Nomadize is a collection of rake tasks for managing migrations using a PostgreSQL database. It does not import an entire ORM and aims to be a small / simple utility.
 
 
 ## Installation

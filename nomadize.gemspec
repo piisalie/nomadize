@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["paul@into.computer"]
 
   spec.summary       = %q{A simple database migration utility}
+  spec.description   = %q{Nomadize is a collection of rake tasks for managing migrations using a PostgreSQL database. It does not import an entire ORM and aims to be a small / simple utility.}
   spec.homepage      = "https://github.com/piisalie/nomadize"
   spec.license       = "MIT"
 
