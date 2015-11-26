@@ -12,7 +12,7 @@ namespace :db do
     Nomadize.drop_database
   end
 
-  desc 'Generate a migration template file in {appdir}/db/migrations/'
+  desc "Generate a migration template file. default directory: {appdir}/db/migrations"
   task :new_migration, [:migration_name] do |_, args|
     Nomadize.generate_template_migration_file(args.migration_name)
   end
@@ -31,6 +31,12 @@ namespace :db do
   task :rollback, :steps do |_, args|
     count = args.steps || 1
     Nomadize.rollback(count)
+  end
+
+  desc 'generate template config file'
+  task :generate_template_config do
+    Nomadize.generate_template_config
+    puts 'Config created in config/database.yml'
   end
 
 end

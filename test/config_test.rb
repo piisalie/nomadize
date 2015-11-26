@@ -6,7 +6,7 @@ require 'nomadize/config'
 class ConfigTest < Minitest::Test
 
   def config_contents
-    { 'migrations_path' => 'db/migrations',
+    {
       'development'     => { dbname: 'db_dev' },
       'test'            => { dbname: 'db_test'},
     }
@@ -35,6 +35,11 @@ class ConfigTest < Minitest::Test
     ENV['RACK_ENV'] = 'test'
     assert_equal({dbname: 'db_test'}, Nomadize::Config.db_connection_info)
     ENV.delete('RACK_ENV')
+  end
+
+  def test_has_default_migrations_path
+    build_and_load_fake_config_file
+    assert_equal 'db/migrations', Nomadize::Config.migrations_path
   end
 
   def build_and_load_fake_config_file
