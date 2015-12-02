@@ -1,33 +1,34 @@
 require 'nomadize'
+require 'nomadize/help'
 
 namespace :db do
 
-  desc 'Create database using name in {appdir}/config/database.yml'
+  desc Nomadize.help.fetch(:create)
   task :create do
     Nomadize.create_database
   end
 
-  desc 'drop database using name in {appdir}/config/database.yml'
+  desc Nomadize.help.fetch(:drop)
   task :drop do
     Nomadize.drop_database
   end
 
-  desc "Generate a migration template file. default directory: {appdir}/db/migrations"
+  desc Nomadize.help.fetch(:new_migration)
   task :new_migration, [:migration_name] do |_, args|
     Nomadize.generate_template_migration_file(args.migration_name)
   end
 
-  desc 'Run migrations'
+  desc Nomadize.help.fetch(:migrate)
   task :migrate do
     Nomadize.run_migrations
   end
 
-  desc 'view the status of known migrations'
+  desc Nomadize.help.fetch(:status)
   task :status do
     Nomadize.status
   end
 
-  desc 'rollback migrations (default count: 1)'
+  desc Nomadize.help.fetch(:rollback)
   task :rollback, :steps do |_, args|
     count = args.steps || 1
     Nomadize.rollback(count)

@@ -47,6 +47,15 @@ After a config file is in place  add `require 'nomadize/tasks'` to your rake fil
 * `rake db:rollback[count]` - rollback migrations (default count: 1)
 * `rake db:generate_template_config` - generate a config file in `config/database.yml`
 
+Alternatively you can use the commandline tool `nomadize`:
+
+* `nomadize create` - creates a database and a schema_migrations table
+* `nomadize drop`   - dumps your poor poor database
+* `nomadize new_migration $migration_name` - creates a timestamped migration file in db/migrations/ just fill in the details.
+* `nomadize migrate` - runs migrations found in db/migrations that have not been run yet
+* `nomadize status` - see which migrations have or have not been run
+* `nomadize rollback $count` - rollback migrations (default count: 1)
+
 Migrations are written in SQL in the generated YAML files:
 
 ```
