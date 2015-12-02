@@ -1,6 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'nomadize'
+require 'nomadize/help'
+
+def show_help
+  puts "Usage:"
+  Nomadize.help.each_pair do |command, help|
+    puts "  nomadize #{command.to_s.ljust(15)} #{help}"
+  end
+end
 
 def migration_name
   ARGV.fetch(1)
@@ -9,6 +17,8 @@ rescue IndexError
 end
 
 case ARGV[0]
+when '-h' then show_help
+when '--help' then show_help
 when 'create' then Nomadize.create_database
 when 'drop' then Nomadize.drop_database
 when 'new_migration' then Nomadize.generate_template_migration_file(migration_name)
