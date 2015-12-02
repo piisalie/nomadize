@@ -89,3 +89,14 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/piisal
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+## Changelog
+0.3.0
+  * Include a command line interface for Nomadize commands (THANKS [@moonglum](https://github.com/moonglum))
+
+0.2.0
+  * migration_path setting now has a default instead of being a required option in config/database.yml
+  * Reworded some of the README.md
+  * Added a rake task to generate a template config file in config/database.yml
+
+0.1.0 - Initial Release
