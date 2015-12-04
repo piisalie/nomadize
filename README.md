@@ -22,7 +22,11 @@ Or install it yourself as:
 
 ## Usage
 
-Nomadize expects a database configuration file in `config/database.yml`. You can generate this file with the rake task `db:generate_template_config` or write it yourself. This file should look something like:
+Nomadize supports two different methods for configuring the connection to Postgres. Nomadize will also provide access to the underlying PG connection wrapper (using your defined config) by using the `Nomadize::Config.db` method. This wrapper responds to `exec` in the same way that the underlying PG connection object does.
+
+### Config File
+
+You may use a config file `config/database.yml`. This file can be generated with either the rake task: `db:generate_template_config` or the CLI: `$ nomadize generate_template_config`. You can also choose to create the file for yourself. `config/database.yml` should look something like:
 
 ```
 development:
@@ -33,10 +37,28 @@ production:
   :dbname: lol_production
 ```
 
-test/development/production keys set environment dependent options (through `RACK_ENV`) for the postgres connection object. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
+The test/development/production keys define environment dependent options for the `PG.connection` based on the environment set via `RACK_ENV`. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
 
-`migrations_path: db/migrations` defines where Nomadize should find and create your migration files, this setting is optional and is set to `db/migrations` by default.
+The directory in which to find migrations files can optionally be set with the config:
+`migrations_path: db/migrations`
+The default value is `db/migrations`
 
+### ENV['DATABASE_URL']
+
+As of 0.4.0 Nomadize will also respect the `DATABASE_URL` environment variable. If `DATABASE_URL` is set it will override the connection information in the config file `config/database.yml`.
+eg `postgres://user1:supersecure@somehost:1337/database-name` will result in the following configuration hash being passed to the underlying `PG.connection` object.
+
+```ruby
+{
+  dbname:   'database-name',
+  port:     1337,
+  user:     'user1',
+  password: 'supersecure',
+  host:     'somehost'
+}
+```
+
+### Migrations
 After a config file is in place  add `require 'nomadize/tasks'` to your rake file, and enjoy helpful new rake tasks such as:
 
 * `rake db:create` - creates a database and a schema_migrations table
@@ -55,6 +77,7 @@ Alternatively you can use the commandline tool `nomadize`:
 * `nomadize migrate` - runs migrations found in db/migrations that have not been run yet
 * `nomadize status` - see which migrations have or have not been run
 * `nomadize rollback $count` - rollback migrations (default count: 1)
+* `nomadize generate_template_config` - generate a config file in `config/database.yml`
 
 Migrations are written in SQL in the generated YAML files:
 
@@ -63,8 +86,6 @@ Migrations are written in SQL in the generated YAML files:
 :up:   'CREATE TABLE testing (field TEXT);'
 :down: 'DROP TABLE testing;'
 ```
-
-You also have access to the underlying PG connection wrapper (using your defined config) by using the `Nomadize::Config.db` method. This wrapper responds to `exec` in the same way that the underlying PG connection object does.
 
 ## Development
 
@@ -75,7 +96,7 @@ todo:
 - [x] to display migration status
 - [x] migration rollbacks
 - [ ] transactions / error handling
-- [ ] maybe some kind of logging idk
+- [x] maybe some kind of logging idk
 - [x] possibly wrap pg
 - [x] template config file generator
 - [x] maybe set a default migrations path (so the key isn't required in the config file)
@@ -91,6 +112,13 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/piisal
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 ## Changelog
+0.4.0
+  * support DATABASE_URL env variable
+  * Add template_config generator to command line tool
+  * Update the README
+  * Added some basic logging
+  * Fix an issue with rollback count not actually working :'(
+
 0.3.0
   * Include a command line interface for Nomadize commands (THANKS [@moonglum](https://github.com/moonglum))
 

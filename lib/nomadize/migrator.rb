@@ -13,7 +13,7 @@ module Nomadize
     end
 
     def rollback(count)
-      done[-count..-1].reverse.map { |migration| migration.rollback(db) }
+      done[-count.to_i..-1].reverse.map { |migration| migration.rollback(db) }
     end
 
     def pending

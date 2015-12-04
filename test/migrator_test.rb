@@ -69,4 +69,16 @@ class MigratorTest < Minitest::Test
     refute check_for_table?('testing', db)
   end
 
+  def test_it_can_rollback_a_migration_even_if_count_is_a_string
+    db = setup_database
+    migration1 = Nomadize::Migration.new(
+      up: "CREATE TABLE testing (wat VARCHAR);",
+      down: "DROP TABLE testing;",
+      filename: '20151109lolwat')
+    Nomadize::Migrator.new(db: db, migrations: [ migration1 ]).run
+
+    migrator = Nomadize::Migrator.new(db: db, migrations: [ migration1 ])
+    assert migrator.rollback("1")
+  end
+
 end

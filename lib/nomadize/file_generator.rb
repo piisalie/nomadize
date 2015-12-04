@@ -14,7 +14,9 @@ module Nomadize
 
     def save
       FileUtils.mkdir_p path unless File.exists?(path)
+      migration_file = File.join(path, timestamped_name)
       File.open(File.join(path, timestamped_name), "w") { |f| f.write(template_content) }
+      migration_file
     end
 
     private
