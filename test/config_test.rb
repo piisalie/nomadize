@@ -23,7 +23,9 @@ class ConfigTest < Minitest::Test
 
     ENV['RACK_ENV'] = 'testing'
     assert_equal 'testing', Nomadize::Config.env
-    ENV.delete('RACK_ENV')
+
+    ensure
+      ENV.delete('RACK_ENV')
   end
 
   def test_switches_db_config_with_env
@@ -34,12 +36,33 @@ class ConfigTest < Minitest::Test
 
     ENV['RACK_ENV'] = 'test'
     assert_equal({dbname: 'db_test'}, Nomadize::Config.db_connection_info)
-    ENV.delete('RACK_ENV')
+
+    ensure
+      ENV.delete('RACK_ENV')
   end
 
   def test_has_default_migrations_path
     build_and_load_fake_config_file
     assert_equal 'db/migrations', Nomadize::Config.migrations_path
+  end
+
+  def test_databse_url_env_var_overrides_config_file
+    build_and_load_fake_config_file
+    config = {
+      dbname:   'database-name',
+      port:     1337,
+      user:     'user1',
+      password: 'supersecure',
+      host:     'somehost'
+    }
+
+    assert_nil ENV['DATABASE_URL']
+    ENV['DATABASE_URL'] = "postgres://#{config[:user]}:#{config[:password]}@#{config[:host]}:#{config[:port]}/#{config[:dbname]}"
+
+    assert_equal config, Nomadize::Config.db_connection_info
+
+    ensure
+      ENV.delete('DATABASE_URL')
   end
 
   def build_and_load_fake_config_file
