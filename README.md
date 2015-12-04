@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-Nomadize expects a database configuration file in `config/database.yml`. You can generate this file with the rake task `db:generate_template_config` or write it yourself. This file should look something like:
+Nomadize expects a database configuration file in `config/database.yml`. You can generate this file with the rake task(`db:generate_template_config`)/CLI(`$ nomadize generate_template_config`). Or you can write it yourself. This file should look something like:
 
 ```
 development:
@@ -36,6 +36,19 @@ production:
 test/development/production keys set environment dependent options (through `RACK_ENV`) for the postgres connection object. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
 
 `migrations_path: db/migrations` defines where Nomadize should find and create your migration files, this setting is optional and is set to `db/migrations` by default.
+
+Note: as of 0.4.0 Nomadize will also respect the `DATABASE_URL` environment variable. If `DATABASE_URL` is set it will override the connection information in the config file `config/database.yml`.
+eg `postgres://user1:supersecure@somehost:1337/database-name` will result in the following configuration hash being passed to the underlying `PG.connection` object.
+
+```ruby
+{
+  dbname:   'database-name',
+  port:     1337,
+  user:     'user1',
+  password: 'supersecure',
+  host:     'somehost'
+}
+```
 
 After a config file is in place  add `require 'nomadize/tasks'` to your rake file, and enjoy helpful new rake tasks such as:
 
@@ -55,6 +68,7 @@ Alternatively you can use the commandline tool `nomadize`:
 * `nomadize migrate` - runs migrations found in db/migrations that have not been run yet
 * `nomadize status` - see which migrations have or have not been run
 * `nomadize rollback $count` - rollback migrations (default count: 1)
+* `nomadize generate_template_config` - generate a config file in `config/database.yml`
 
 Migrations are written in SQL in the generated YAML files:
 
@@ -75,7 +89,7 @@ todo:
 - [x] to display migration status
 - [x] migration rollbacks
 - [ ] transactions / error handling
-- [ ] maybe some kind of logging idk
+- [x] maybe some kind of logging idk
 - [x] possibly wrap pg
 - [x] template config file generator
 - [x] maybe set a default migrations path (so the key isn't required in the config file)
@@ -91,6 +105,13 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/piisal
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 ## Changelog
+0.4.0
+  * support DATABASE_URL env variable
+  * Add template_config generator to command line tool
+  * Update the README
+  * Added some basic logging
+  * Fix an issue with rollback count not actually working :'(
+
 0.3.0
   * Include a command line interface for Nomadize commands (THANKS [@moonglum](https://github.com/moonglum))
 

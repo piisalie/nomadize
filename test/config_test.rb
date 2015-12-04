@@ -46,7 +46,7 @@ class ConfigTest < Minitest::Test
     assert_equal 'db/migrations', Nomadize::Config.migrations_path
   end
 
-  def test_databse_url_env_var_overrides_config_file
+  def test_database_url_env_var_overrides_config_file
     build_and_load_fake_config_file
     config = {
       dbname:   'database-name',

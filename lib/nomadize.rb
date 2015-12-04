@@ -14,7 +14,8 @@ module Nomadize
     migrations      = migration_files.map { |migration| Migration.new(migration) }
     migrator        = Migrator.new(db: db, migrations: migrations)
 
-    migrator.run
+    files_migrated = migrator.run
+    puts files_migrated
     db
   end
 
@@ -45,7 +46,8 @@ module Nomadize
     migrations      = migration_files.map { |migration| Migration.new(migration) }
     migrator        = Migrator.new(db: db, migrations: migrations)
 
-    migrator.rollback(count)
+    files_rolled_back = migrator.rollback(count)
+    puts files_rolled_back
     db
   end
 
@@ -54,7 +56,8 @@ module Nomadize
   end
 
   def self.generate_template_migration_file(name)
-    Nomadize::FileGenerator.new(path: Config.migrations_path, name: name).save
+    migration_file = Nomadize::FileGenerator.new(path: Config.migrations_path, name: name).save
+    puts "Migration file created: #{Dir.pwd}/#{migration_file}"
   end
 
   def self.generate_template_config

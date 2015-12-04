@@ -6,7 +6,7 @@ require 'nomadize/help'
 def show_help
   puts "Usage:"
   Nomadize.help.each_pair do |command, help|
-    puts "  nomadize #{command.to_s.ljust(15)} #{help}"
+    puts "  nomadize #{command.to_s.ljust(25)} #{help}"
   end
 end
 
@@ -25,6 +25,7 @@ when 'new_migration' then Nomadize.generate_template_migration_file(migration_na
 when 'migrate' then Nomadize.migrate
 when 'status' then Nomadize.status
 when 'rollback' then Nomadize.rollback(ARGV.fetch(1, 1))
+when 'generate_template_config' then Nomadize.generate_template_config
 when nil then abort 'Error: No Command Provided'
 else abort "Error: Unknown Command '#{ARGV[0]}'"
 end

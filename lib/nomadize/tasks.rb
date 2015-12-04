@@ -34,7 +34,7 @@ namespace :db do
     Nomadize.rollback(count)
   end
 
-  desc 'generate template config file'
+  desc Nomadize.help.fetch(:generate_template_config)
   task :generate_template_config do
     Nomadize.generate_template_config
     puts 'Config created in config/database.yml'
