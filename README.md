@@ -112,6 +112,9 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/piisal
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 ## Changelog
+0.4.1
+  * Fix a bug with command line utility using and incorrect method name.
+
 0.4.0
   * support DATABASE_URL env variable
   * Add template_config generator to command line tool
