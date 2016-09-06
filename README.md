@@ -39,10 +39,6 @@ production:
 
 The test/development/production keys define environment dependent options for the `PG.connection` based on the environment set via `RACK_ENV`. These key/value pairs are handed directly to the `PG.connect` method, documentation for what options can be passed can be found [here](http://deveiate.org/code/pg/PG/Connection.html#method-c-new).
 
-The directory in which to find migrations files can optionally be set with the config:
-`migrations_path: db/migrations`
-The default value is `db/migrations`
-
 ### ENV['DATABASE_URL']
 
 As of 0.4.0 Nomadize will also respect the `DATABASE_URL` environment variable. If `DATABASE_URL` is set it will override the connection information in the config file `config/database.yml`.
@@ -112,6 +108,9 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/piisal
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 ## Changelog
+0.4.2
+  * Make migrations path hard coded (this fixes an issue with heroku overwriting the database.yml file)
+
 0.4.1
   * Fix a bug with command line utility using and incorrect method name.
 
